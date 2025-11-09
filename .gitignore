@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+
+# VS Code settings
+.vscode/
+
+# CSV temporales o datasets locales (opcional)
+*.csv
+
+# Archivos de logs
+*.log
