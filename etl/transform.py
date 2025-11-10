@@ -17,7 +17,7 @@ df["order_date"] = pd.to_datetime(df["order_date"])
 df["ship_date"] = pd.to_datetime(df["ship_date"])
 
 # ========================
-# 3. Crear nuevas columnas útiles
+# 3. Crear nuevas columnas 
 # ========================
 
 # Días para entregar
@@ -43,10 +43,32 @@ df = df.fillna({
     "delivery_days": df["delivery_days"].median()
 })
 
-# ========================
-# 6. Resultados
-# ========================
-print(df.head())
+
+# Extraer solo columnas necesarias de la tabla original
+orders = df[["order_id", "order_date", "ship_date"]].drop_duplicates()
+
+# Crear claves de fechas 
+orders["order_date_key"] = orders["order_date"].dt.strftime("%Y%m%d").astype(int)
+orders["ship_date_key"] = orders["ship_date"].dt.strftime("%Y%m%d").astype(int)
+
+# Crear llave surrogate incremental
+orders["order_key"] = range(1, len(orders) + 1)
+
+# Seleccionar únicamente las columnas finales que existirán en SQL
+orders = orders[[
+    "order_key",
+    "order_id",
+    "order_date_key",
+    "ship_date_key"
+]]
+
+# Guardar CSV
+orders.to_csv("data_clean/dim_order.csv", index=False)
+
+
+
+
+
 
 
 
